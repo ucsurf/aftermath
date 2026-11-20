@@ -1,0 +1,7 @@
+/aftermath
+/aftermath.exe
+/dist/
+*.out
+*.test
+/aftermath.bundle
+.DS_Store

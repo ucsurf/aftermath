@@ -1,0 +1,6 @@
+[credential]
+	helper = osxkeychain
+[core]
+	hooksPath = .git-hooks
+[url "git@github.com:"]
+	insteadOf = https://github.com/

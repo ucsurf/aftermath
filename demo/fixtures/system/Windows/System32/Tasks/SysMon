@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Task>
+  <RegistrationInfo><URI>\SysMon</URI></RegistrationInfo>
+  <Actions>
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c echo aftermath-fixture</Arguments>
+    </Exec>
+  </Actions>
+</Task>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.apple.sysmond</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/sh</string><string>-c</string><string>echo aftermath-fixture</string></array>
+</dict></plist>

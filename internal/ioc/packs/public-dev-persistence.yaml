@@ -1,0 +1,250 @@
+version: 1
+id: public-dev-persistence-2026.11
+name: Public developer persistence indicators
+updated: "2026-11-20"
+indicators:
+  - id: cursor-claude-ext-ssh-key
+    severity: critical
+    title: SSH authorized_keys matches the tampered Claude Code extension
+    description: >
+      Cursor reported that marketplace copies of Anthropic.claude-code 2.1.312
+      and 2.1.313 appended an ssh-ed25519 key whose comment is svc-telemetry.
+      The key material below is the public key from that notice.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      paths:
+        - .ssh/authorized_keys
+        - .ssh/authorized_keys2
+      content_any:
+        - "AAAAC3NzaC1lZDI1NTE5AAAAIDdvylCEJ/k2TpezcTfedrkHyFSK9IZ3vmP6vhY4Ss0P"
+        - "svc-telemetry"
+
+  - id: cursor-claude-ext-smt-files
+    severity: critical
+    title: Persistence file from the tampered Claude Code extension
+    description: >
+      The same notice lists ~/.config/.smt and ~/.config/.smtk on Linux and
+      macOS, and %USERPROFILE%\.config\smt.cmd and smtk on Windows.
+      File contents are not read or displayed.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      paths:
+        - .config/.smt
+        - .config/.smtk
+        - .config/smt.cmd
+        - .config/smtk
+
+  - id: cursor-claude-ext-launchagent
+    severity: critical
+    title: LaunchAgent com.apple.sysmond.plist from the tampered Claude Code extension
+    description: >
+      The notice names ~/Library/LaunchAgents/com.apple.sysmond.plist
+      (label com.apple.sysmond) as the macOS persistence plist.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      paths:
+        - Library/LaunchAgents/com.apple.sysmond.plist
+
+  - id: cursor-claude-ext-startup-sysmon
+    severity: critical
+    title: Startup script sysmon.cmd from the tampered Claude Code extension
+    description: >
+      The notice names the Windows fallback
+      %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\sysmon.cmd.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      paths:
+        - AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/sysmon.cmd
+
+  - id: cursor-claude-ext-task-sysmon
+    severity: critical
+    title: Scheduled task SysMon from the tampered Claude Code extension
+    description: >
+      The notice names a scheduled task SysMon. This matches the task file
+      at Windows\System32\Tasks\SysMon. A legitimate task with the same name
+      would also match.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [system]
+      paths:
+        - Windows/System32/Tasks/SysMon
+
+  - id: cursor-claude-ext-stk-temp
+    severity: critical
+    title: Temp file name .stk_ plus 10 hex characters
+    description: >
+      The notice names /tmp/.stk_<10 hex>, $TMPDIR/.stk_<10 hex>, and
+      %TEMP%\.stk_<10 hex> as SSH identity files. Contents are not read.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      scope: temp
+      name_prefix: ".stk_"
+      name_hex_length: 10
+
+  - id: cursor-claude-ext-cron-smt
+    severity: critical
+    title: Crontab command references .config/.smt
+    description: >
+      The notice describes a Linux @reboot crontab entry that runs
+      .config/.smt. The matched text is the published path fragment, not a
+      copy of the script.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [system]
+      paths:
+        - etc/crontab
+      list_roots:
+        - etc/cron.d
+        - var/spool/cron
+        - usr/lib/cron/tabs
+      content_any:
+        - ".config/.smt"
+
+  - id: cursor-claude-ext-version-2.1.312
+    severity: critical
+    title: Installed extension directory anthropic.claude-code-2.1.312
+    description: >
+      Cursor named Anthropic.claude-code 2.1.312 as a tampered marketplace
+      version. This matches an extension directory name only.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      list_roots:
+        - .cursor/extensions
+        - .vscode/extensions
+      path_contains:
+        - anthropic.claude-code-2.1.312
+
+  - id: cursor-claude-ext-version-2.1.313
+    severity: critical
+    title: Installed extension directory anthropic.claude-code-2.1.313
+    description: >
+      Cursor named Anthropic.claude-code 2.1.313 as a tampered marketplace
+      version. This matches an extension directory name only.
+    source: https://cursor.com/blog/claude-code-extension-security-notice
+    match:
+      bases: [home]
+      list_roots:
+        - .cursor/extensions
+        - .vscode/extensions
+      path_contains:
+        - anthropic.claude-code-2.1.313
+
+  - id: shai-hulud-vscode-task
+    severity: critical
+    title: VS Code task runs node .claude/setup.mjs
+    description: >
+      StepSecurity described a Shai-Hulud wave that commits .vscode/tasks.json
+      with a folderOpen task whose command is node .claude/setup.mjs.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .vscode/tasks.json
+      content_any:
+        - "node .claude/setup.mjs"
+
+  - id: shai-hulud-claude-hook
+    severity: critical
+    title: Claude settings SessionStart hook runs node .vscode/setup.mjs
+    description: >
+      The same StepSecurity writeup describes .claude/settings.json with a
+      SessionStart hook whose command is node .vscode/setup.mjs.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/settings.json
+      content_any:
+        - "node .vscode/setup.mjs"
+
+  - id: shai-hulud-execution-js
+    severity: critical
+    title: Shai-Hulud payload path .claude/execution.js
+    description: >
+      StepSecurity lists .claude/execution.js as the payload copy committed
+      into repositories. A file you created at this path also matches.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/execution.js
+
+  - id: shai-hulud-setup-mjs
+    severity: critical
+    title: Shai-Hulud loader path setup.mjs under .claude or .vscode
+    description: >
+      StepSecurity and Microsoft describe setup.mjs written to .claude and
+      .vscode as the loader those IDE hooks execute.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/setup.mjs
+        - .vscode/setup.mjs
+
+  - id: shai-hulud-setup-mjs-sha256
+    severity: critical
+    title: setup.mjs matches a published Shai-Hulud loader hash
+    description: >
+      StepSecurity published SHA-256
+      4066781fa830224c8bbcc3aa005a396657f9c8f9016f9a64ad44a9d7f5f45e34
+      for the setup.mjs loader used across the packages they analyzed.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/setup.mjs
+        - .vscode/setup.mjs
+      sha256:
+        - 4066781fa830224c8bbcc3aa005a396657f9c8f9016f9a64ad44a9d7f5f45e34
+
+  - id: shai-hulud-execution-js-sha256
+    severity: critical
+    title: execution.js matches a published Shai-Hulud payload hash
+    description: >
+      StepSecurity published two SHA-256 values for execution.js in the
+      packages they analyzed.
+    source: https://www.stepsecurity.io/blog/a-mini-shai-hulud-has-appeared
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/execution.js
+      sha256:
+        - 80a3d2877813968ef847ae73b5eeeb70b9435254e74d7f07d8cf4057f0a710ac
+        - 6f933d00b7d05678eb43c90963a80b8947c4ae6830182f89df31da9f568fea95
+
+  - id: shai-hulud-router-runtime
+    severity: critical
+    title: Shai-Hulud payload path .claude/router_runtime.js
+    description: >
+      Microsoft's Shai-Hulud 2.0 note lists .claude/router_runtime.js as a
+      payload copy written next to the Claude SessionStart hook.
+    source: https://www.microsoft.com/en-us/security/blog/2025/12/09/shai-hulud-2-0-guidance-for-detecting-investigating-and-defending-against-the-supply-chain-attack/
+    match:
+      bases: [home, project]
+      paths:
+        - .claude/router_runtime.js
+
+  - id: shai-hulud-bun-loader-names
+    severity: critical
+    title: Shai-Hulud loader file name setup_bun.js or bun_environment.js
+    description: >
+      Microsoft's indicator table lists setup_bun.js and bun_environment.js
+      as file names from the November 2025 wave. This checks IDE config
+      directories and the npm cache tmp directory, not all of node_modules.
+    source: https://www.microsoft.com/en-us/security/blog/2025/12/09/shai-hulud-2-0-guidance-for-detecting-investigating-and-defending-against-the-supply-chain-attack/
+    match:
+      bases: [home, project]
+      list_roots:
+        - .claude
+        - .vscode
+        - .cursor
+        - .npm/_cacache/tmp
+      basenames:
+        - setup_bun.js
+        - bun_environment.js
