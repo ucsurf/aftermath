@@ -4,7 +4,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"testing"
 	"time"
 )
@@ -46,9 +45,7 @@ func TestReadInsideAndTruncate(t *testing.T) {
 func TestFIFONotOpened(t *testing.T) {
 	root := t.TempDir()
 	path := filepath.Join(root, "pipe")
-	if err := syscall.Mkfifo(path, 0o644); err != nil {
-		t.Fatal(err)
-	}
+	makeFIFO(t, path)
 	done := make(chan error, 1)
 	go func() {
 		_, err := Read(path, NewRoots(root), 32)

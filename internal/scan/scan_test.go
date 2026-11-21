@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"testing"
 	"time"
 
@@ -96,9 +95,7 @@ func TestSymlinkAndFIFOAndHuge(t *testing.T) {
 	if err := os.Symlink(filepath.Join(outside, "secret"), filepath.Join(home, ".ssh", "authorized_keys")); err != nil {
 		t.Fatal(err)
 	}
-	if err := syscall.Mkfifo(filepath.Join(home, ".zshrc"), 0o644); err != nil {
-		t.Fatal(err)
-	}
+	makeFIFO(t, filepath.Join(home, ".zshrc"))
 	f, err := os.Create(filepath.Join(home, ".bashrc"))
 	if err != nil {
 		t.Fatal(err)
