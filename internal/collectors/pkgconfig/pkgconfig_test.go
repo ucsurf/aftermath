@@ -3,6 +3,7 @@ package pkgconfig
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -40,11 +41,16 @@ func TestNpmrcTokenHighWhenUnusual(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := Collect(home, "linux")
-	if len(got.Findings) != 1 || got.Findings[0].Severity != "high" || !strings.Contains(got.Findings[0].Title, "world-readable") {
-		t.Fatalf("world-readable: %#v", got.Findings)
+	// Windows file modes have no other-read bit, so the world-readable case is Unix only.
+	if runtime.GOOS != "windows" {
+		if len(got.Findings) != 1 || got.Findings[0].Severity != "high" || !strings.Contains(got.Findings[0].Title, "world-readable") {
+			t.Fatalf("world-readable: %#v", got.Findings)
+		}
 	}
-	if strings.Contains(got.Findings[0].Evidence, token) {
-		t.Fatal("token leaked")
+	for _, f := range got.Findings {
+		if strings.Contains(f.Evidence, token) {
+			t.Fatal("token leaked")
+		}
 	}
 
 	body = "registry=https://npm.example.test/\n//npm.example.test/:_authToken=" + token + "\n"

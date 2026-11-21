@@ -57,7 +57,7 @@ func TestExitCodesAndBaseline(t *testing.T) {
 
 	mustWrite(t, filepath.Join(home, ".npmrc"), "//registry.npmjs.org/:_authToken=npm_DemoTokenValueShouldNeverPrint0001\n")
 	out.Reset()
-	if code := Run(append([]string{"diff", base, "--format", "json"}, args...), &out, &err); code != 1 {
+	if code := Run(append([]string{"diff", base, "--format", "json", "--fail-on", "medium"}, args...), &out, &err); code != 1 {
 		t.Fatalf("new finding diff %d\n%s", code, out.String())
 	}
 	if !strings.Contains(out.String(), `"change": "new"`) {
